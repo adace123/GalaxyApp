@@ -1,0 +1,118 @@
+body{
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:cover;
+}
+#show{
+    text-align:center;
+    img{
+        border-radius:20px;
+    }
+    ul{
+        list-style:none;
+    }
+}
+
+
+.card, .card img{
+    border-radius:20px;
+    opacity:.85;
+}
+#index{
+    text-align:center;
+    width:55%;
+   margin-top:65px;
+}
+.card :not(img){
+    background-color:gray;
+    opacity:.8;
+}
+
+.card img{
+margin-top:8px;
+height:300px;
+width:300px;
+}
+
+.right {
+   margin-right:1%;
+   float:right;
+}
+#galaxy-img a:hover{
+    cursor:pointer;
+}
+#show img, table{
+    opacity:.75;
+}
+
+#name{
+    
+    display:inline-block;
+}
+.button:hover{
+    color:purple;
+}
+.centered {
+  position: fixed;
+  text-align:center;
+  top: 50%;
+  left: 50%;
+
+  margin-top: -50px;
+  margin-left: -100px;
+    margin-right:100px;  
+}
+header{
+    margin:0;
+    top: 0;
+    position:fixed;
+     z-index: 100;
+     width:100%;
+      font-size:20px;
+      padding-bottom:0%;
+      padding-top:0%;
+      margin-top:0%;
+      opacity:.8;
+     left:0;
+     margin-bottom:0;
+}
+
+
+.sticky{
+    margin-top:0px !important;
+    padding:0px !important;
+}
+
+body{
+    background:center center fixed;
+}
+/* credit to Philip Sacht on Codepen for the iframe styling code */
+iframe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+}
+@media (min-aspect-ratio: 16/9) {
+iframe {
+    height: 300%; top: -100%;
+  
+  }
+}
+@media (max-aspect-ratio: 16/9) {
+iframe {
+    width: 300%; left: -100%;
+  }
+}
+
+#features{
+    background-image:url("https://images3.alphacoders.com/245/thumb-1920-245.jpg");
+    opacity:.85;
+    color:white;
+    padding-bottom:5px;
+    
+    background-repeat:no-repeat;
+    background-size:cover;
+}

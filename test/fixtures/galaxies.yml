@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  galaxy_type: MyString
+  distance: 1.5
+  num_stars: 1
+  diameter: 1.5
+  mass: 1.5
+  notable_features: MyText
+
+two:
+  galaxy_type: MyString
+  distance: 1.5
+  num_stars: 1
+  diameter: 1.5
+  mass: 1.5
+  notable_features: MyText

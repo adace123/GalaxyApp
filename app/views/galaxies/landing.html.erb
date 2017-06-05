@@ -1,0 +1,29 @@
+
+<html>
+	<head>
+	    <title>Galaxy Explorer</title>
+      <style>
+body {
+	margin:0;
+	padding:0;
+	text-align:center;
+	position:absolute;
+}
+
+#main{
+    opacity:.5;
+}
+
+      </style>
+	</head>
+	<body>
+		<div style="position: fixed; z-index: -99; width: 100%; height: 100%">
+			<iframe src="https://player.vimeo.com/video/45563598?autoplay=1&controls=0&loop=1&rel=0&showinfo=0&autohide=1&wmode=transparent&hd=1&rel=0"  frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div id="main" class="centered">
+			<h2>
+				<%= link_to 'Begin Your Journey','galaxies#index', class:'button primary' %>
+			</h2>
+		</div>
+	</body>
+</html>

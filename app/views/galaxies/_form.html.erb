@@ -1,0 +1,145 @@
+
+<%= form_for @galaxy, url: galaxies_path, :html => { multipart: true } do |form| %>
+  <% if @galaxy.errors.any? %>
+
+      <h2><%= pluralize(galaxy.errors.count, "error") %> prohibited this galaxy from being saved:</h2>
+     
+      <% galaxy.errors.full_messages.each do |message| %>
+        <div class="card error" >
+          <div class="section">
+             <%= message %>
+          </div>
+         </div>
+
+        
+      <% end %>
+     
+  <% end %>
+<fieldset>
+  <legend style="text-align:center;font-size:24px;">Add a Galaxy</legend>
+   <div class="input-group fluid">
+     <%= form.label :name %>
+    <%= form.text_field :name, id: :galaxy_name %>
+   </div>
+    
+  <div class="input-group fluid">
+    <%= form.label :galaxy_type %>
+     <%= form.select :galaxy_type, options_for_select(["Spiral","Elliptical","Irregular"]), :selected => 'Spiral' %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_distance">Distance (in kilo-lightyears)</label>
+    <%= form.text_field :distance, id: :galaxy_distance %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_num_stars">Number of stars (in billions)</label>
+    <%= form.number_field :num_stars, id: :galaxy_num_stars %>
+  </div>
+  
+  
+  <div class="input-group fluid">
+    <label for="galaxy_diameter">Diameter (in lightyears)</label>
+    <%= form.text_field :diameter, id: :galaxy_diameter %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_mass">Mass (in solar masses)</label>
+    <%= form.text_field :mass, id: :galaxy_mass %>
+  </div>
+
+  <div class="input-group fluid">
+    <%= form.text_area :notable_features, id: :galaxy_notable_features, style:"display:none;visibility:hidden;", rows:"11", cols:"100" %>
+  </div>
+  
+  
+  <div style="text-align:center" id="addfeatures">
+    <span id="addfeature" class="button" style='cursor:pointer'>Add Notable Features +</span>
+    <span id="savefeature" class="button">Save All Features</span>
+  </div>
+  
+  <div class="input-group fluid">
+  <%= form.label :image,'Upload image', class: 'button', id: 'filelabel', style:"margin-left:13%;" %>
+  <%= form.file_field :image %>
+  <span id="img-text">
+    <img height="150px" width="150px" id="img-preview">
+    </span>
+    <div class="input-group fluid">
+    <button id="remove" style="visibility:hidden;display:none;" class="secondary">Remove Image</button>
+  </div>
+  </div>
+  
+    <div style="text-align:center">
+   <input type="button" class="tertiary" value="Back" onclick="location.href='/galaxies'">
+
+     <input id="submitform" type="submit" class="primary" value="Submit Galaxy">
+
+    
+  </div>
+  
+</fieldset>
+  
+  
+<% end %>
+<script>
+$('#savefeature').hide();
+
+ var hidden = $('#galaxy_notable_features').val();
+ var valString = "";
+  
+ var values = {};
+ var newFeatureCount = 0;
+ 
+ $('#addfeature').click(()=>{
+    $('#savefeature').show();
+  newFeatureCount++;
+  
+   $('#addfeatures').append(`<span id='feature-span${newFeatureCount}'><br><input id="newfeature${newFeatureCount}" type='text' style='width:34%'> <span id='remove${newFeatureCount}' class='button'>Remove</span><span id="saved${newFeatureCount}"></span></span>`);
+   
+   $('#savefeature').click(()=>{
+   
+    for(var i=0;i<$('#addfeatures input').length;i++){
+        values[i] = $('#addfeatures input')[i].value;
+    }
+     
+    console.log(values);
+     resetValues();
+     sweetAlert("All notable features saved!");
+     
+   });
+   
+  $('#remove'+newFeatureCount).click(()=>{
+      
+   $('#feature-span'+newFeatureCount).remove();
+   
+   delete values[newFeatureCount-1];
+
+   
+   resetValues();
+   
+   console.log(values);
+   
+   newFeatureCount--;
+   if(newFeatureCount==0)
+   $('#savefeature').hide();
+ });
+ 
+ });
+ 
+ $('#submitform').click((e)=>{
+    e.preventDefault();
+    sweetAlert('Did you enter all required fields and save the notable features you entered?').then(()=>{$('#new_galaxy').submit();});
+ });
+ 
+function resetValues(){
+  valString = "";
+  $('#galaxy_notable_features').val("");
+  for(var val of Object.values(values)){
+       valString+=val+"\n";
+     }
+     console.log(hidden);
+     $('#galaxy_notable_features').val(valString);
+     
+}
+ 
+</script>

@@ -1,0 +1,140 @@
+<header>
+  <% if @signed_in %>
+<a href="/galaxies/new" class="button">Add</a>
+<% end %>
+<a href="/galaxies" class="button">Show Galaxies</a>
+
+<div class="right">
+  
+  <form action="/galaxies/find/" method="post" style="display:inline-block;margin:0px;padding:0px;background:none;border:none;">
+      <input name="name" placeholder='Enter Name To Search' style="">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+    <button id="search-button">Advanced Search</button>
+     <% if @signed_in and @authorized %>
+    <a href="/galaxies/<%= @galaxy.id.to_s %>/edit" class="button">Edit</a>
+    <a href="/galaxies/<%= @galaxy.id.to_s %>/delete" class="button" onclick="return confirm('Are you sure?')">Delete</a>  
+    <%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'button' %>
+    <% else %>
+    
+    <a href="/users/sign_in" class="button">Login</a>
+    <% end %>
+</div>
+
+</header>
+<div class="container" id="show">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-16">
+       <p id="notice"><%= notice %></p>
+       <p>
+
+  <figure>
+<a href="http://www.sky-map.org/?object=<%= @galaxy.name %>" target="_blank">
+   <%= image_tag @galaxy.image.url(:large) %>
+</a>
+  </figure>
+</p>
+
+       <table>
+  <thead>
+    <tr>
+      <td colspan="6"><h1 id="name">The <%= @galaxy.name.split(" ").map{|n| n.capitalize}.join(" ") %> Galaxy</h1></td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <th>Distance from Earth (lightyears)</th>
+      <th>Estimated Number of Stars (billions)</th>
+      <th>Diameter (lightyears)</th>
+      <th>Mass (solar masses)</th>
+      <th>Posted By:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Type"><%= @galaxy.galaxy_type %></td>
+      <td data-label="Distance"><%= @galaxy.distance %></td>
+      <td data-label="Number of Stars"><%= @galaxy.num_stars %></td>
+      <td data-label="Diameter"><%= @galaxy.diameter %></td>
+      <td data-label="Mass"><%= @galaxy.mass %></td>
+      <td data-label="Posted by"><%= @user.pluck(:username).join("") %></td>
+    </tr>
+    
+  </tbody>
+</table>
+
+<br>
+<button id="show-features" class="button large">Show Features</button>
+<div id="features">
+  <p>
+  <strong style="font-size:36px">Notable features:</strong>
+  <ul>
+    <% for feature in @galaxy.notable_features.split("\n") %>
+    <li style="font-size:24px">-<%= feature %></li>
+    <% end %>
+  </ul>
+</div>
+
+
+  <br>
+ 
+  <a href="/galaxies" class="button large">Back</a>
+</p>
+    </div>
+  </div>
+ 
+</div>
+
+<script>
+  $(document).ready(()=>{
+    var showing = false;
+    const backgrounds = ['https://images6.alphacoders.com/519/thumb-1920-519732.jpg','https://images8.alphacoders.com/589/thumb-1920-589838.jpg','https://images3.alphacoders.com/560/thumb-1920-560779.jpg','https://images5.alphacoders.com/792/thumb-1920-792647.jpg'];
+    $('#show').parent().css('background-image',"url("+backgrounds[Math.floor(Math.random() * backgrounds.length)]+")");
+    $('#features').hide();
+    $('#show-features').click(()=>{
+      
+      if(!showing){
+         $('#show-features').text('Hide Features');
+      $('#features').fadeIn('slow');
+      }
+      
+      else {
+        $('#show-features').text('Show Features');
+        $('#features').fadeOut('fast');
+        
+      }
+      showing = !showing;
+    });
+    
+    function confirm(){
+      sweetAlert("Are you sure?");
+    }
+    
+    $('#search-button').click(()=>{
+   sweetAlert({html:`<%= form_tag "/galaxies/findadvanced", :id => 'advanced-search' do %>
+    <div class='input-group-field'>
+     <strong><%= label_tag 'Type' %></strong>
+     <span><%= select_tag :type, options_for_select(["Spiral","Elliptical","Irregular"]), :selected => 'Spiral' %></span>
+     </div>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Mass' %></strong>
+     <span>Between <%= text_field_tag :lower_mass, 0 %> and <%= text_field_tag :upper_mass,  Galaxy.maximum(:mass) %></span>
+     </div><hr>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Distance' %></strong>
+     <span>Between <%= text_field_tag :lower_distance,  0%> and <%= text_field_tag :upper_distance,  Galaxy.maximum(:distance) %></span>
+     </div><hr>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Diameter' %></strong>
+     <span>Between <%= text_field_tag :lower_diameter,  0%> and <%= text_field_tag :upper_diameter,  Galaxy.maximum(:diameter) %></span>
+     </div><hr>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Number of Stars' %></strong>
+     <span>Between <%= text_field_tag :lower_stars,  0%> and <%= text_field_tag :upper_stars,  Galaxy.maximum(:num_stars) %></span>
+     </div>
+     <br>
+    <%= submit_tag "Search" %>
+ <% end %><br>`,width:'50%',showConfirmButton:false, showCloseButton:true, confirmButtonText:'Search'})
+});
+  });
+</script>

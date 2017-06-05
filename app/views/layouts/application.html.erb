@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" href="https://gitcdn.link/repo/Chalarangelo/mini.css/master/dist/mini-default.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script async src="https://www.youtube.com/iframe_api"></script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+    <title>GalaxyApp</title>
+    <%= csrf_meta_tags %>
+  
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+     
+      <%= yield %>
+    
+  
+  </body>
+  <script>
+  $(document).ready(function(){
+    $(".card").hide(0).fadeIn(2000);
+   $("#galaxyform").hide(0).fadeIn(1500);
+  
+  });
+  </script>
+</html>

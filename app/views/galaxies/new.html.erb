@@ -1,0 +1,90 @@
+<header>
+<a href="/galaxies" class="button">Show Galaxies</a>
+
+<div class="right">
+  <form action="/galaxies/find/" method="post" style="display:inline-block;margin:0px;padding:0px;background:none;border:none;">
+      <input name="name" placeholder='Enter Name To Search' style="">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <button><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+
+ <%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'button' %>
+</div>
+
+</header>
+<div class="container" id="galaxyform">
+
+    <div class="row">
+        <div id="form" class="col-lg-8 col-lg-offset-2 col-md-12 col-sm-14">
+            <%= render 'form', galaxy: @galaxy %>
+        </div>
+         
+</div>
+</div>
+
+<script>
+$(document).ready(()=>{
+    
+    $('#search-button').click(()=>{
+   sweetAlert({html:`<%= form_tag "/galaxies/findadvanced", :id => 'advanced-search' do %>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Mass' %></strong>
+     <span>Between <%= text_field_tag :lower_mass, 0 %> and <%= text_field_tag :upper_mass,  Galaxy.maximum(:mass) %></span>
+     </div><hr>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Distance' %></strong>
+     <span>Between <%= text_field_tag :lower_distance,  0%> and <%= text_field_tag :upper_distance,  Galaxy.maximum(:distance) %></span>
+     </div><hr>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Diameter' %></strong>
+     <span>Between <%= text_field_tag :lower_diameter,  0%> and <%= text_field_tag :upper_diameter,  Galaxy.maximum(:diameter) %></span>
+     </div><hr>
+     <div class='input-group-field'>
+     <strong><%= label_tag 'Number of Stars' %></strong>
+     <span>Between <%= text_field_tag :lower_stars,  0%> and <%= text_field_tag :upper_stars,  Galaxy.maximum(:num_stars) %></span>
+     </div>
+     <br>
+    <%= submit_tag "Search" %>
+ <% end %><br>`,width:'50%',showConfirmButton:false, showCloseButton:true, confirmButtonText:'Search'})
+});
+   
+const backgrounds = ["https://images3.alphacoders.com/169/thumb-1920-169667.jpg",
+"https://images.alphacoders.com/805/thumb-1920-805180.jpg",
+"https://images6.alphacoders.com/550/thumb-1920-550127.jpg"];
+     
+$('#galaxyform').parent().css('background-image',"url("+backgrounds[Math.floor(Math.random() * 3)]+")");
+
+$('#galaxyform').css('opacity',0.8);
+$('#galaxyform .row').children().children().css('background-color','#C1CEF6');
+
+$('input:file').on('change',()=>{
+    $('#img-preview').css('visibility','visible');
+    $('#img-preview').css('display','unset');
+   var reader = new FileReader();
+        reader.onload = function(e) {
+            try{
+                $('#img-preview').attr('src', e.target.result);
+            }catch(e){
+                $('#img-text').text("Error. Image preview couldn't be loaded.");
+            }
+            
+        }
+        reader.readAsDataURL($('input:file')[0].files[0]);
+        
+    $('#remove').css('display','unset');
+    $('#remove').css('visibility','visible');
+    
+    $('#remove').click((e)=>{
+        e.preventDefault();
+      $('#img-preview').attr('src',""); 
+      $('#img-preview').css('visibility','hidden');
+      $('#img-preview').css('display','none');
+        $('#remove').css('display','none');
+    $('#remove').css('visibility','hidden');
+
+    });
+});
+
+});
+
+</script>

@@ -1,0 +1,142 @@
+<header>
+<a href="/galaxies/new" class="button">Add</a>
+<a href="/galaxies" class="button">Show Galaxies</a>
+
+
+<div class="right">
+  <input type="search" placeholder="Search">
+<%= link_to 'Delete', @galaxy, method: :delete, data: { confirm: 'Are you sure?' }, class:'button' %>   
+<%= link_to "Sign out", destroy_user_session_path, :method => :delete, :class => 'button' %>
+
+</div>
+
+</header>
+<div class="container" id="galaxyform">
+
+    <div class="row">
+        <div id="form" class="col-lg-8 col-lg-offset-2 col-md-12 col-sm-14">
+            
+<%= form_for @galaxy, url: update_galaxy_url, :html => { multipart: true } do |form| %>
+  <% if @galaxy.errors.any? %>
+
+        <h2><%= pluralize(galaxy.errors.count, "error") %> prohibited this galaxy from being saved:</h2>
+     
+      <% galaxy.errors.full_messages.each do |message| %>
+        <div class="card error">
+          <div class="section">
+             <%= message %>
+          </div>
+         </div>
+      <% end %>
+     
+  <% end %>
+<fieldset>
+  <legend style="text-align:center;font-size:24px;">Edit '<%=@galaxy.name.capitalize%>' Galaxy</legend>
+   <div class="input-group fluid">
+     <%= form.label :name %>
+    <%= form.text_field :name, id: :galaxy_name %>
+   </div>
+    
+  <div class="input-group fluid">
+    <%= form.label :galaxy_type %>
+     <%= form.select :galaxy_type, options_for_select(["Spiral","Elliptical","Irregular"]), :selected => 'Spiral' %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_distance">Distance (in kilo-lightyears)</label>
+    <%= form.text_field :distance, id: :galaxy_distance %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_num_stars">Number of stars (in billions)</label>
+    <%= form.number_field :num_stars, id: :galaxy_num_stars %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_diameter">Diameter (in lightyears)</label>
+    <%= form.text_field :diameter, id: :galaxy_diameter %>
+  </div>
+
+  <div class="input-group fluid">
+    <label for="galaxy_mass">Mass (in solar masses)</label>
+    <%= form.text_field :mass, id: :galaxy_mass %>
+  </div>
+
+  <div class="input-group fluid">
+    <%= form.text_area :notable_features, id: :galaxy_notable_features, placeholder: 'Enter notable features separated by a spaces.' %>
+  </div>
+  
+  <div class="input-group fluid">
+  <%= form.label :image,'Upload image', class: 'button', id: 'filelabel' %>
+  <%= form.file_field :image %>
+  <span id="img-text">
+    <img height="150px" width="150px" id="img-preview">
+    </span>
+    <div class="input-group fluid">
+    <button id="remove" style="visibility:hidden;display:none;" class="secondary">Remove Image</button>
+  </div>
+  </div>
+  
+    <div style="text-align:center">
+   <input type="button" class="tertiary" value="Back" onclick="location.href='/galaxies'">
+
+     <input type="submit" class="primary" value="Submit Galaxy">
+
+    
+  </div>
+  
+</fieldset>
+  
+  
+<% end %>
+
+        </div>
+         
+</div>
+</div>
+
+<script>
+$(document).ready(()=>{
+   
+const backgrounds = ["https://images3.alphacoders.com/169/thumb-1920-169667.jpg",
+"https://images.alphacoders.com/805/thumb-1920-805180.jpg",
+"https://images6.alphacoders.com/550/thumb-1920-550127.jpg"];
+     
+$('#galaxyform').parent().css('background-image',"url("+backgrounds[Math.floor(Math.random() * 3)]+")");
+
+$('#galaxyform').css('opacity',0.8);
+$('#galaxyform .row').children().children().css('background-color','#C1CEF6');
+
+$('input:file').on('change',()=>{
+    $('#img-preview').css('visibility','visible');
+       $('#img-preview').css('display','unset');
+   var reader = new FileReader();
+        reader.onload = function(e) {
+            try{
+                $('#img-preview').attr('src', e.target.result);
+            }catch(e){
+                $('#img-text').text("Error. Image preview couldn't be loaded.");
+            }
+            
+        }
+        reader.readAsDataURL($('input:file')[0].files[0]);
+        
+    $('#remove').css('display','unset');
+    $('#remove').css('visibility','visible');
+    
+    $('#remove').click((e)=>{
+        e.preventDefault();
+      $('#img-preview').attr('src',""); 
+      $('#img-preview').css('visibility','hidden');
+      $('#img-preview').css('display','none');
+        $('#remove').css('display','none');
+    $('#remove').css('visibility','hidden');
+
+    });
+});
+
+
+
+});
+
+</script>
